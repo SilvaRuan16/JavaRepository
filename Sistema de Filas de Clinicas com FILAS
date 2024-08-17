@@ -1,0 +1,81 @@
+import java.util.LinkedList;
+import java.util.Queue;
+import java.util.Scanner;
+
+public class FilaClinica {
+
+    private static Queue<String> filaPacientes = new LinkedList<>();
+
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        int opcao;
+
+        do {
+            System.out.println("\n=== Sistema de Controle de Fila da Clínica ===\n");
+            System.out.println("Digite [1] para Adicionar paciente à fila");
+            System.out.println("Digite [2] para Atender paciente");
+            System.out.println("Digite [3] para Ver próximo paciente");
+            System.out.println("Digite [4] para Exibir fila de pacientes");
+            System.out.println("Digite [5] para Sair");
+            System.out.print("\nDigite uma opção: ");
+            opcao = scanner.nextInt();
+            scanner.nextLine();
+
+            switch (opcao) {
+                case 1:
+                    adicionarPaciente(scanner);
+                    break;
+                case 2:
+                    atenderPaciente();
+                    break;
+                case 3:
+                    verProximoPaciente();
+                    break;
+                case 4:
+                    exibirFila();
+                    break;
+                case 5:
+                    System.out.println("Encerrando o sistema...");
+                    break;
+                default:
+                    System.err.println("Opção inválida. Tente novamente.");
+                    break;
+            }
+        } while (opcao != 5);
+
+        scanner.close();
+    }
+
+    private static void adicionarPaciente(Scanner scanner) {
+        System.out.print("Digite o nome do paciente: ");
+        String nomePaciente = scanner.nextLine();
+        filaPacientes.add(nomePaciente);
+        System.out.println("Paciente " + nomePaciente + " foi adicionado à fila.");
+    }
+
+    private static void atenderPaciente() {
+        if (filaPacientes.isEmpty()) {
+            System.out.println("Nenhum paciente na fila para atendimento.");
+        } else {
+            String pacienteAtendido = filaPacientes.poll();
+            System.out.println("Atendendo paciente: " + pacienteAtendido);
+        }
+    }
+
+    private static void verProximoPaciente() {
+        if (filaPacientes.isEmpty()) {
+            System.out.println("Nenhum paciente na fila.");
+        } else {
+            String proximoPaciente = filaPacientes.peek();
+            System.out.println("Próximo paciente a ser atendido: " + proximoPaciente);
+        }
+    }
+
+    private static void exibirFila() {
+        if (filaPacientes.isEmpty()) {
+            System.out.println("A fila de pacientes está vazia.");
+        } else {
+            System.out.println("Pacientes na fila: " + filaPacientes);
+        }
+    }
+}
