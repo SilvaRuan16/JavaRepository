@@ -1,0 +1,104 @@
+import java.util.Comparator;
+import java.util.PriorityQueue;
+import java.util.Scanner;
+
+class Project {
+    private String projectName;
+    private int priority;
+
+    public Project(String projectName, int priority) {
+        this.projectName = projectName;
+        this.priority = priority;
+    }
+
+    public int getPriority() {
+        return priority;
+    }
+
+    public String toString() {
+        return "Projeto{" + "projectName = " + projectName + ", priority = " + priority + "}";
+    }
+}
+
+class PriorityComparator implements Comparator<Project> {
+
+    public int compare(Project p1, Project p2) {
+        return Integer.compare(p2.getPriority(), p1.getPriority());
+    }
+}
+
+public class ProjectDemand {
+    private static PriorityQueue<Project> priorityQueue = new PriorityQueue<>(new PriorityComparator());
+    public static void main(String[] args) {
+        Scanner scan = new Scanner(System.in);
+        int opcao;
+
+        do {
+            System.out.println("\n=== Sistema de Listagem de Filas com Prioridades ===\n");
+            System.out.println("[1] para adicionar um novo projeto");
+            System.out.println("[2] para desenvolver o projeto");
+            System.out.println("[3] para ver o próximo projeto");
+            System.out.println("[4] para exibir a lista de projetos");
+            System.out.println("[5] sair");
+            System.out.println("Informe a opção desejada: ");
+            opcao = scan.nextInt();
+            scan.nextLine();
+
+            switch(opcao) {
+                case 1:
+                    adicionarProjeto(scan);
+                    break;
+                case 2:
+                    desenvolverProjeto();
+                    break;
+                case 3:
+                    verProximoProjeto();
+                    break;
+                case 4:
+                    exibirListaProjetos();
+                    break;
+                case 5:
+                    System.out.println("Aplicação encerrada!");
+                    break;
+                default:
+                    System.out.println("Opção inválida. Favor tentar novamente");
+                    break;
+            }
+        } while (opcao != 5);
+    }
+
+    private static void adicionarProjeto(Scanner scan) {
+        System.out.println("Informe o nome do projeto: ");
+        String projectName = scan.nextLine();
+        System.out.println("Informe a prioridade do projeto: ");
+        int priority = scan.nextInt();
+        scan.nextLine();
+        Project project = new Project(projectName, priority);
+        priorityQueue.add(project);
+        System.out.println("Nome do projeto: " + projectName + "| Prioridade: " + priority);
+
+    }
+    private static void desenvolverProjeto(){
+        if(priorityQueue.isEmpty()) {
+            System.out.println("Nenhum projeto com prioridade encontrado na fila ..");
+        } else {
+            Project project = priorityQueue.poll();
+            System.out.println("Desenvolvendo o projeto " + project);
+        }
+    }
+    private static void verProximoProjeto() {
+        if(priorityQueue.isEmpty()) {
+            System.out.println("Nenhum projeto na fila");
+        } else {
+            Project nextProject = priorityQueue.peek();
+            System.out.println("Proximo projeto: " + nextProject);
+        }
+    }
+    private static void exibirListaProjetos() {
+        if(priorityQueue.isEmpty()) {
+            System.out.println("Nenhum projeto na lista com prioridades a ser exibidas");
+        } else {
+            System.out.println("Fila de projetos com prioridades: " + priorityQueue);
+        }
+    }
+}
